@@ -11,12 +11,36 @@ import TableRow from "@tiptap/extension-table-row";
 import Image from "@tiptap/extension-image";
 import ImageResize from "tiptap-extension-resize-image";
 import { UseEditorStore } from "@/store/use-editor-store";
+import Underline from "@tiptap/extension-underline";
+import FontFamily from "@tiptap/extension-font-family";
+import TextStyle from "@tiptap/extension-text-style";
 
 export const Editor = () => {
   const { setEditor } = UseEditorStore();
 
   const editor = useEditor({
     onCreate({ editor }) {
+      setEditor(editor);
+    },
+    onDestroy() {
+      setEditor(null);
+    },
+    onUpdate({ editor }) {
+      setEditor(editor);
+    },
+    onSelectionUpdate({ editor }) {
+      setEditor(editor);
+    },
+    onTransaction({ editor }) {
+      setEditor(editor);
+    },
+    onFocus({ editor }) {
+      setEditor(editor);
+    },
+    onBlur({ editor }) {
+      setEditor(editor);
+    },
+    onContentError({ editor }) {
       setEditor(editor);
     },
     editorProps: {
@@ -28,6 +52,9 @@ export const Editor = () => {
     },
     extensions: [
       StarterKit,
+      Underline,
+      FontFamily,
+      TextStyle,
       Image,
       ImageResize,
       Table,
