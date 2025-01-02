@@ -23,6 +23,33 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { type Level } from "@tiptap/extension-heading";
+import { type ColorResult, CirclePicker } from "react-color";
+
+const TextColorButton = () => {
+  const { editor } = UseEditorStore();
+
+  const value = editor?.getAttributes("textStyle").color || "#000000";
+
+  const onChange = (color: ColorResult) => {
+    editor?.chain().focus().setColor(color.hex).run();
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+          <div>
+            <span className="text-xs"> A</span>
+            <div className="h-0.5 w-full" style={{ backgroundColor: value }} />
+          </div>
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-2.5">
+        <CirclePicker color={value} onChange={onChange} />
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 const HeadingLevelButton = () => {
   const { editor } = UseEditorStore();
@@ -239,7 +266,14 @@ const Toolbar = () => {
       {sections[1].map((item) => (
         <ToolbarButton key={item.label} {...item} />
       ))}
+      <TextColorButton />
+      {/*highlight color */}
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
+      {/*Link */}
+      {/*Image */}
+      {/*Align */}
+      {/*Line height */}
+      {/*List */}
       {sections[2].map((item) => (
         <ToolbarButton key={item.label} {...item} />
       ))}
