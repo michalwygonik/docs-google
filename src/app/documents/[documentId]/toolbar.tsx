@@ -6,6 +6,7 @@ import { UseEditorStore } from "@/store/use-editor-store";
 import {
   BoldIcon,
   ChevronDownIcon,
+  HighlighterIcon,
   ItalicIcon,
   ListTodoIcon,
   LucideIcon,
@@ -23,7 +24,30 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { type Level } from "@tiptap/extension-heading";
-import { type ColorResult, CirclePicker } from "react-color";
+import { type ColorResult, SketchPicker } from "react-color";
+
+const HighlightColorButton = () => {
+  const { editor } = UseEditorStore();
+
+  const value = editor?.getAttributes("highlight").color || "#FFFFFF";
+
+  const onChange = (color: ColorResult) => {
+    editor?.chain().focus().setHighlight({ color: color.hex }).run();
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+          <HighlighterIcon color={value} className="size-4" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-0 border-0">
+        <SketchPicker onChange={onChange} />
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 const TextColorButton = () => {
   const { editor } = UseEditorStore();
@@ -44,8 +68,8 @@ const TextColorButton = () => {
           </div>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="p-2.5">
-        <CirclePicker color={value} onChange={onChange} />
+      <DropdownMenuContent className="p-0 border-0">
+        <SketchPicker color={value} onChange={onChange} />
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -267,7 +291,7 @@ const Toolbar = () => {
         <ToolbarButton key={item.label} {...item} />
       ))}
       <TextColorButton />
-      {/*highlight color */}
+      <HighlightColorButton />
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
       {/*Link */}
       {/*Image */}
