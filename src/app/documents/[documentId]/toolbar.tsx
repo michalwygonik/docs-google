@@ -4,12 +4,18 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { UseEditorStore } from "@/store/use-editor-store";
 import {
+  AlignCenterIcon,
+  AlignJustifyIcon,
+  AlignLeftIcon,
+  AlignRightIcon,
   BoldIcon,
   ChevronDownIcon,
   HighlighterIcon,
   ImageIcon,
   ItalicIcon,
   Link2Icon,
+  ListIcon,
+  ListOrderedIcon,
   ListTodoIcon,
   LucideIcon,
   MessageSquareIcon,
@@ -39,6 +45,101 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+
+const ListButton = () => {
+  const { editor } = UseEditorStore();
+
+  const lists = [
+    {
+      label: "Bullet List",
+      icon: ListIcon,
+      isActive: () => editor?.isActive("bulletList"),
+      onClick: () => editor?.chain().focus().toggleBulletList().run(),
+    },
+    {
+      label: "Ordered List",
+      icon: ListOrderedIcon,
+      isActive: () => editor?.isActive("orderedList"),
+      onClick: () => editor?.chain().focus().toggleOrderedList().run(),
+    },
+  ];
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <div className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm cursor-pointer">
+          <ListIcon className="size-4" />
+        </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-1 flex flex-col gap-y-1">
+        {lists.map(({ label, icon: Icon, onClick, isActive }) => (
+          <div
+            key={label}
+            onClick={onClick}
+            className={cn(
+              "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80 cursor-pointer",
+              isActive() && "bg-neutral-200/80"
+            )}
+          >
+            <Icon className="size-4" />
+            <span className="text-sm">{label}</span>
+          </div>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+const AlignButton = () => {
+  const { editor } = UseEditorStore();
+
+  const alignments = [
+    {
+      label: "Align Left",
+      value: "left",
+      icon: AlignLeftIcon,
+    },
+    {
+      label: "Align Center",
+      value: "center",
+      icon: AlignCenterIcon,
+    },
+    {
+      label: "Align Reft",
+      value: "right",
+      icon: AlignRightIcon,
+    },
+    {
+      label: "Align Justify",
+      value: "justify",
+      icon: AlignJustifyIcon,
+    },
+  ];
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <div className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm cursor-pointer">
+          <AlignLeftIcon className="size-4" />
+        </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-1 flex flex-col gap-y-1">
+        {alignments.map(({ label, value, icon: Icon }) => (
+          <div
+            key={value}
+            onClick={() => editor?.chain().focus().setTextAlign(value).run()}
+            className={cn(
+              "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80 cursor-pointer",
+              editor?.isActive({ textAlign: value }) && "bg-neutral-200/80"
+            )}
+          >
+            <Icon className="size-4" />
+            <span className="text-sm">{label}</span>
+          </div>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 const ImageButton = () => {
   const { editor } = UseEditorStore();
@@ -161,9 +262,9 @@ const HighlightColorButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
-          <HighlighterIcon color={value} className="size-4" />
-        </button>
+        <div className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm cursor-pointer">
+          <HighlighterIcon className="size-4" />
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="p-0 border-0">
         <SketchPicker color={value} onChange={onChange} />
@@ -184,12 +285,10 @@ const TextColorButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
-          <div>
-            <span className="text-xs"> A</span>
-            <div className="h-0.5 w-full" style={{ backgroundColor: value }} />
-          </div>
-        </button>
+        <div className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm cursor-pointer">
+          <span className="text-xs"> A</span>
+          <div className="h-0.5 w-full" style={{ backgroundColor: value }} />
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="p-0 border-0">
         <SketchPicker color={value} onChange={onChange} />
@@ -228,7 +327,7 @@ const HeadingLevelButton = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="p-1 flex flex-col gap-y-1">
         {headings.map(({ label, value, fontSize }) => (
-          <button
+          <div
             key={value}
             style={{ fontSize }}
             onClick={() => {
@@ -243,14 +342,14 @@ const HeadingLevelButton = () => {
               }
             }}
             className={cn(
-              "flex items-center gap-x-2 px-2 rounded-sm hover:bg-neutral-200/80",
+              "flex items-center gap-x-2 px-2 rounded-sm hover:bg-neutral-200/80 cursor-pointer",
               (value === 0 && !editor?.isActive("heading")) ||
                 (editor?.isActive("heading", { level: value }) &&
                   "bg-neutral-200/80")
             )}
           >
             {label}
-          </button>
+          </div>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
@@ -280,18 +379,18 @@ const FontFamilyButton = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="p-1 flex flex-col gap-y-1">
         {fonts.map(({ label, value }) => (
-          <button
+          <div
             onClick={() => editor?.chain().focus().setFontFamily(value).run()}
             key={value}
             className={cn(
-              "flex items-center gap-x-2 px-2 rounded-sm hover:bg-neutral-200/80",
+              "flex items-center gap-x-2 px-2 rounded-sm hover:bg-neutral-200/80 cursor-pointer",
               editor?.getAttributes("textStyle").FontFamily === value &&
                 "bg-neutral-200/80"
             )}
             style={{ fontFamily: value }}
           >
             <span className="text-sm">{label}</span>
-          </button>
+          </div>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
@@ -418,9 +517,9 @@ const Toolbar = () => {
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
       <LinkButton />
       <ImageButton />
-      {/*Align */}
+      <AlignButton />
       {/*Line height */}
-      {/*List */}
+      <ListButton />
       {sections[2].map((item) => (
         <ToolbarButton key={item.label} {...item} />
       ))}
