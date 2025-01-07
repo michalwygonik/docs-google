@@ -7,6 +7,8 @@ interface DocumentIdPageProps {
 
 const DocumentIdPage = async ({ params }: DocumentIdPageProps) => {
   const { documentID } = await params;
+  console.log(documentID);
+
   return (
     <div className="min-h-screen bg-[#FAFBFD]">
       <Toolbar />
