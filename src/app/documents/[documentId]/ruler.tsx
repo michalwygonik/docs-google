@@ -127,7 +127,7 @@ interface MarkerProps {
 const Marker = ({
   position,
   isLeft,
-  //isDragging,
+  isDragging,
   onMouseDown,
   onDoubleClick,
 }: MarkerProps) => {
@@ -138,7 +138,17 @@ const Marker = ({
       onMouseDown={onMouseDown}
       onDoubleClick={onDoubleClick}
     >
-      <FaCaretDown className="absolute lef-1/2 top-0 h-full fill-blue-500 trasnform -translate-x-1/2" />
+      <FaCaretDown className="absolute lef-1/2 top-0 h-full fill-blue-500 transform -translate-x-1/2" />
+      <div
+        className="absolute top-4 transform -translate-x-1/2"
+        style={{
+          height: "100vh",
+          width: "1px",
+          backgroundColor: "#3b72f6",
+          transform: "scaleX(0.5)",
+          display: isDragging ? "block" : "none",
+        }}
+      />
     </div>
   );
 };
