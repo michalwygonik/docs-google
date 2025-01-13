@@ -17,11 +17,7 @@ interface DocumentsTableProps {
   status: PaginationStatus;
 }
 
-const DocumentsTable = ({
-  documents,
-  loadMore,
-  status,
-}: DocumentsTableProps) => {
+const DocumentsTable = ({ documents }: DocumentsTableProps) => {
   return (
     <div className="max-w-screen-xl mx-auto px-16 py-6 flex flex-col gap-5">
       {documents === undefined ? (
