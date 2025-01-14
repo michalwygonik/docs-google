@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import DocumentRow from "./document-row";
+import { Button } from "@/components/ui/button";
 
 interface DocumentsTableProps {
   documents: Doc<"documents">[] | undefined;
@@ -17,7 +18,11 @@ interface DocumentsTableProps {
   status: PaginationStatus;
 }
 
-const DocumentsTable = ({ documents }: DocumentsTableProps) => {
+const DocumentsTable = ({
+  documents,
+  loadMore,
+  status,
+}: DocumentsTableProps) => {
   return (
     <div className="max-w-screen-xl mx-auto px-16 py-6 flex flex-col gap-5">
       {documents === undefined ? (
@@ -54,6 +59,16 @@ const DocumentsTable = ({ documents }: DocumentsTableProps) => {
           )}
         </Table>
       )}
+      <div className="flex items-center justify-center">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => loadMore(5)}
+          disabled={status !== "CanLoadMore"}
+        >
+          {status === "CanLoadMore" ? "Load more" : "End of results"}
+        </Button>
+      </div>
     </div>
   );
 };
