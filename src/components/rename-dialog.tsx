@@ -16,6 +16,7 @@ import {
 } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { toast } from "sonner";
 
 interface RenameDialogProps {
   documentId: Id<"documents">;
@@ -37,9 +38,11 @@ const RenameDialog = ({
     e.preventDefault();
     setIsUpdating(true);
     update({ id: documentId, title: title.trim() || "Untitled" })
-      .then(() => setOpen(false))
+      .catch(() => toast.error("Something went wrong"))
+      .then(() => toast.success("Document removed!"))
       .finally(() => {
         setIsUpdating(false);
+        setOpen(false);
       });
   };
   return (
