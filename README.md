@@ -55,4 +55,4 @@ Try the live version of the application here: [Google Docs Clone](https://docs-g
 
 This project was inspired by the functionality of Google Docs. A huge thank you to the creator of the tutorial "[Build Google Docs Clone in React & Next.js](https://youtu.be/gq2bbDmSokU?si=qDh_basDnA6AIqCk)", which was an instrumental guide in learning the technologies and implementing the core features of this clone. This tutorial helped me gain a deeper understanding of working with React, Next.js, and Firebase.
 
-Additionally, I'd like to acknowledge **Code With Antonio** for creating the tutorial and providing insights on solving various challenges encountered during the development process. Without this resource, the project wouldn't have been possible.
+Additionally, I'd like to thank **Code With Antonio** for creating the tutorial and providing insights on solving various challenges encountered during the development process. Without this resource, the project wouldn't have been possible.
