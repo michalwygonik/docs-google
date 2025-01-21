@@ -37,8 +37,13 @@ import { BsFilePdf } from "react-icons/bs";
 import { UseEditorStore } from "@/store/use-editor-store";
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import { Avatars } from "./avatars";
+import { Doc } from "../../../../convex/_generated/dataModel";
 
-const Navbar = () => {
+interface NavbarProps {
+  data: Doc<"documents">;
+}
+
+const Navbar = ({ data }: NavbarProps) => {
   const { editor } = UseEditorStore();
 
   const insertTable = ({ rows, cols }: { rows: number; cols: number }) => {
@@ -63,7 +68,7 @@ const Navbar = () => {
     const blob = new Blob([JSON.stringify(content)], {
       type: "application/json",
     });
-    onDownload(blob, `document.json`); //TODO: Use document name
+    onDownload(blob, `${data.title}.json`);
   };
 
   const onSaveHTML = () => {
@@ -73,7 +78,7 @@ const Navbar = () => {
     const blob = new Blob([content], {
       type: "text.html",
     });
-    onDownload(blob, `document.html`);
+    onDownload(blob, `${data.title}.html`);
   };
 
   const onSaveText = () => {
@@ -83,7 +88,7 @@ const Navbar = () => {
     const blob = new Blob([content], {
       type: "text/plain",
     });
-    onDownload(blob, `document.txt`);
+    onDownload(blob, `${data.title}.txt`);
   };
 
   return (
