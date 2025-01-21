@@ -10,8 +10,10 @@ import { api } from "../../../../convex/_generated/api";
 interface DocumentProps {
   preloadedDocument: Preloaded<typeof api.documents.getById>;
 }
-const document = usePreloadedQuery(preloadedDocument);
-export const Document = async ({ preloadedDocument }: DocumentProps) => {
+
+export const Document = ({ preloadedDocument }: DocumentProps) => {
+  const document = usePreloadedQuery(preloadedDocument);
+
   return (
     <Room>
       <div className="min-h-screen bg-[#FAFBFD]">
